@@ -13,7 +13,7 @@ app.use(express.json())
 
 
 app.use(cors({
-  origin: 'https://notes-app-frontend-ylpq.vercel.app/', 
+  origin: 'https://notes-app-frontend-ylpq.vercel.app', 
   credentials: true,              
 }));
 
