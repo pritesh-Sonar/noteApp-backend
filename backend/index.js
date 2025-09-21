@@ -92,27 +92,6 @@ app.post("/user",(req,res)=>{
     )
 })
 
-app.post("/update", (req,res)=>{
-    const {email, title} = req.body
-    NotesModel.findOne({userEmail:email}&&{title:title})
-    .then(user => {
-        res.json(user)
-    })
-    .catch(err => res.json(err))
-})
-
-// let savedData = {date:'7', month:"6", title: 'Initial Data', useEmail: 'xyz@gmail.com', value: 'content',year:"2035",__v:0, _id:'123', };
-let savedData = null
-
-app.get("/home/data",(req,res)=>{
-        res.json(savedData);
-})
-
-app.post("/home/update",(req,res) => {
-    const userData = req.body;
-    savedData = userData;
-    // console.log(userData);
-})
 
 app.post("/updatePost",async(req,res) =>{
   const {email,title,value,prevTitle} = req.body
