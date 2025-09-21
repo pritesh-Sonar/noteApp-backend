@@ -13,7 +13,7 @@ app.use(express.json())
 
 
 app.use(cors({
-  origin: 'http://localhost:5173', 
+  origin: 'https://notes-app-frontend-ylpq.vercel.app', 
   credentials: true,              
 }));
 
@@ -159,7 +159,7 @@ app.post('/forgot-password', (req, res) => {
             from: 'priteshs2003@gmail.com',
             to: email,
             subject: 'Reset Password Link',
-            text: `http://localhost:5173/reset_password/${user._id}/${token}`
+            text: `https://notes-app-frontend-ylpq.vercel.app/reset_password/${user._id}/${token}`
           };
           
           transporter.sendMail(mailOptions, function(error, info){
