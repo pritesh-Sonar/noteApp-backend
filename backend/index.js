@@ -38,7 +38,7 @@ app.post("/login",async (req,res) => {
             bcrypt.compare(password, user.password, (err,response)=>{
                 if(response){
                     const token = jwt.sign({email: user.email, role: user.role},   
-                     process.env.JWT_SECRET_KEY, {expiresIn: "1d"} )
+                     "jwt_secret_key", {expiresIn: "1d"} )
                     res.cookie('token',token)
                     return res.json("Success")
                 }else{
