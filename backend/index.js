@@ -14,7 +14,7 @@ app.use(express.json())
 
 
 app.use(cors({
-  origin: "https://notes-app-frontend-ylpq.vercel.app", 
+  origin: process.env.FRONTEND_URL, 
   credentials: true,              
 }));
 
@@ -37,7 +37,7 @@ app.post("/login",async (req,res) => {
             bcrypt.compare(password, user.password, (err,response)=>{
                 if(response){
                     const token = jwt.sign({email: user.email, role: user.role},   
-                     "jwt_secret_key", {expiresIn: "1d"} )
+                     process.env.JWT_SECRET_KEY, {expiresIn: "5m"} )
                     res.cookie('token',token)
                     return res.json("Success")
                 }else{
@@ -124,7 +124,7 @@ app.post('/forgot-password', (req, res) => {
         if(!user) {
             return res.send({Status: "User not existed"})
         } 
-        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET_KEY, {expiresIn: "1d"})
+        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET_KEY, {expiresIn: "5m"})
         var transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
