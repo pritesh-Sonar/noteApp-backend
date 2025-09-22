@@ -7,18 +7,19 @@ const app = express();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
+require('dotenv').config();
+
 
 app.use(express.json())
 
 
 
 app.use(cors({
-  origin: 'https://notes-app-frontend-ylpq.vercel.app', 
+  origin: process.env.FRONTEND_URL, 
   credentials: true,              
 }));
 
-// const mongoURI = 'mongodb://localhost:27017/NotesApp';
-const mongoURI= 'mongodb+srv://priteshs2003:India%4011@cluster0.3pg2wbw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const mongoURI = process.env.MONGO_URI;
 
 mongoose.connect(mongoURI)
 .then(()=> console.log("connected to mongodb"))
@@ -37,7 +38,7 @@ app.post("/login",async (req,res) => {
             bcrypt.compare(password, user.password, (err,response)=>{
                 if(response){
                     const token = jwt.sign({email: user.email, role: user.role},   
-                     "jwt-secret-key", {expiresIn: "1d"} )
+                     process.env.JWT_SECRET_KEY, {expiresIn: "1d"} )
                     res.cookie('token',token)
                     return res.json("Success")
                 }else{
@@ -92,7 +93,6 @@ app.post("/user",(req,res)=>{
     )
 })
 
-
 app.post("/updatePost",async(req,res) =>{
   const {email,title,value,prevTitle} = req.body
   await NotesModel.findOneAndUpdate(
@@ -125,20 +125,20 @@ app.post('/forgot-password', (req, res) => {
         if(!user) {
             return res.send({Status: "User not existed"})
         } 
-        const token = jwt.sign({id: user._id}, "jwt_secret_key", {expiresIn: "5m"})
+        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET_KEY, {expiresIn: "1d"})
         var transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-              user: 'notesappbyp@gmail.com',
-              pass: 'yvjh tovl nlse uojh'
+              user: process.env.EMAIL_USER,
+              pass: process.env.EMAIL_PASS
             }
           });
           
           var mailOptions = {
-            from: 'notesappbyp@gmail.com',
+            from: process.env.EMAIL_USER,
             to: email,
-            subject: 'NO REPLY Reset Password Link',
-            text: `https://notes-app-frontend-ylpq.vercel.app/reset_password/${user._id}/${token}`
+            subject: 'Reset Password Link',
+            text: `${process.env.FRONTEND_URL}/reset_password/${user._id}/${token}`
           };
           
           transporter.sendMail(mailOptions, function(error, info){
@@ -155,7 +155,7 @@ app.post('/reset-password/:id/:token', (req, res) => {
     const {id, token} = req.params
     const {password} = req.body
 
-    jwt.verify(token, "jwt_secret_key", (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
         if(err) {
             return res.json({Status: "Error with token"})
         } else {
