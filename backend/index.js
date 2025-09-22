@@ -125,7 +125,7 @@ app.post('/forgot-password', (req, res) => {
         if(!user) {
             return res.send({Status: "User not existed"})
         } 
-        const token = jwt.sign({id: user._id}, "jwt_secret_key", {expiresIn: "1d"})
+        const token = jwt.sign({id: user._id}, "jwt_secret_key", {expiresIn: "5m"})
         var transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
