@@ -129,15 +129,15 @@ app.post('/forgot-password', (req, res) => {
         var transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-              user: 'priteshs2003@gmail.com',
-              pass: 'emiz jdma hbqv hunj'
+              user: 'notesappbyp@gmail.com',
+              pass: 'yvjh tovl nlse uojh'
             }
           });
           
           var mailOptions = {
-            from: 'priteshs2003@gmail.com',
+            from: 'notesappbyp@gmail.com',
             to: email,
-            subject: 'Reset Password Link',
+            subject: 'NO REPLY Reset Password Link',
             text: `https://notes-app-frontend-ylpq.vercel.app/reset_password/${user._id}/${token}`
           };
           
